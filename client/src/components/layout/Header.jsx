@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Icon from '../Icon.jsx';
 import { NAVIGATION } from '../../constants/navigation.js';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function Header() {
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
   const [term, setTerm] = useState('');
+
+  const favoritesCount = user?.favorites?.length || 0;
+  const cartCount = user?.cart?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
   function submitSearch(e) {
     e.preventDefault();
@@ -26,16 +31,18 @@ export default function Header() {
             <Icon name="account" size={16} />
             <span>My Account</span>
           </Link>
-          <Link to="/login" className="header__utility-link">
-            <span>Login</span>
-          </Link>
+          {!isAuthenticated && (
+            <Link to="/login" className="header__utility-link">
+              <span>Login</span>
+            </Link>
+          )}
           <Link to="/favorites" className="header__utility-link">
             <Icon name="heart" size={16} />
-            <span>Favorites (0)</span>
+            <span>Favorites ({favoritesCount})</span>
           </Link>
           <Link to="/cart" className="header__utility-link">
             <Icon name="cart" size={16} />
-            <span>Cart (0)</span>
+            <span>Cart ({cartCount})</span>
           </Link>
         </div>
       </div>

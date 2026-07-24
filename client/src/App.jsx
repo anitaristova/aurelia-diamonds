@@ -1,6 +1,13 @@
 import { BrowserRouter, Routes, Route, useParams, useSearchParams } from 'react-router-dom';
 import Layout from './components/layout/Layout.jsx';
 import Placeholder from './components/Placeholder.jsx';
+import RequireAuth from './components/RequireAuth.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
+import { LoginPromptProvider } from './context/LoginPrompt.jsx';
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
+import AccountLayout from './pages/account/AccountLayout.jsx';
+import AccountProfile from './pages/account/AccountProfile.jsx';
 
 function CategoryPlaceholder() {
   const { department, subcategory } = useParams();
@@ -22,26 +29,39 @@ function SearchPlaceholder() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route index element={<Placeholder title="Aurelia Diamonds" message="Home page coming soon." />} />
-          <Route path="c/:department" element={<CategoryPlaceholder />} />
-          <Route path="c/:department/:subcategory" element={<CategoryPlaceholder />} />
-          <Route path="sale" element={<Placeholder title="Sale" message="Sale collection coming soon." />} />
-          <Route path="search" element={<SearchPlaceholder />} />
-          <Route path="product/:id" element={<Placeholder title="Product" message="Product details coming soon." />} />
-          <Route path="favorites" element={<Placeholder title="My Favorites" message="Favorites coming soon." />} />
-          <Route path="cart" element={<Placeholder title="Your Cart" message="Cart coming soon." />} />
-          <Route path="checkout" element={<Placeholder title="Checkout" message="Checkout coming soon." />} />
-          <Route path="order-confirmation" element={<Placeholder title="Thank you for your order!" />} />
-          <Route path="login" element={<Placeholder title="Login" message="Login coming soon." />} />
-          <Route path="register" element={<Placeholder title="Create Account" message="Registration coming soon." />} />
-          <Route path="account" element={<Placeholder title="My Account" message="Account coming soon." />} />
-          <Route path="account/orders" element={<Placeholder title="My Orders" message="Orders coming soon." />} />
-          <Route path="admin/*" element={<Placeholder title="Admin" message="Admin area coming soon." />} />
-          <Route path="*" element={<Placeholder title="Page not found" message="The page you are looking for does not exist." />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <LoginPromptProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Placeholder title="Aurelia Diamonds" message="Home page coming soon." />} />
+              <Route path="c/:department" element={<CategoryPlaceholder />} />
+              <Route path="c/:department/:subcategory" element={<CategoryPlaceholder />} />
+              <Route path="sale" element={<Placeholder title="Sale" message="Sale collection coming soon." />} />
+              <Route path="search" element={<SearchPlaceholder />} />
+              <Route path="product/:id" element={<Placeholder title="Product" message="Product details coming soon." />} />
+              <Route path="favorites" element={<Placeholder title="My Favorites" message="Favorites coming soon." />} />
+              <Route path="cart" element={<Placeholder title="Your Cart" message="Cart coming soon." />} />
+              <Route path="checkout" element={<Placeholder title="Checkout" message="Checkout coming soon." />} />
+              <Route path="order-confirmation" element={<Placeholder title="Thank you for your order!" />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route
+                path="account"
+                element={
+                  <RequireAuth>
+                    <AccountLayout />
+                  </RequireAuth>
+                }
+              >
+                <Route index element={<AccountProfile />} />
+                <Route path="orders" element={<Placeholder title="My Orders" message="Orders coming soon." />} />
+              </Route>
+              <Route path="admin/*" element={<Placeholder title="Admin" message="Admin area coming soon." />} />
+              <Route path="*" element={<Placeholder title="Page not found" message="The page you are looking for does not exist." />} />
+            </Route>
+          </Routes>
+        </LoginPromptProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

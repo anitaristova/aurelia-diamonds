@@ -35,6 +35,43 @@
   cursor: not-allowed;
 }
 
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(28, 28, 28, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 100;
+}
+
+.modal {
+  background-color: var(--color-surface);
+  width: 100%;
+  max-width: 420px;
+  padding: var(--space-5);
+  text-align: center;
+}
+
+.modal__title {
+  font-size: 24px;
+  margin-bottom: var(--space-2);
+}
+
+.modal__body {
+  color: var(--color-muted);
+  font-size: 14px;
+  margin-bottom: var(--space-4);
+}
+
+.modal__actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
 /* Placeholder pages */
 .placeholder {
   padding-top: var(--space-6);
