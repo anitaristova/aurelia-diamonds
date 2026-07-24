@@ -10,28 +10,29 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(Boolean(localStorage.getItem(TOKEN_KEY)));
 
   useEffect(() => {
-    let active = true;
     if (!token) {
+      setUser(null);
       setLoading(false);
       return;
     }
-    apiFetch('/auth/me', { token })
-      .then((data) => {
-        if (active) setUser(data.user);
-      })
-      .catch(() => {
-        if (active) {
+    const controller = new AbortController();
+    setLoading(true);
+    apiFetch('/auth/me', { token, signal: controller.signal })
+      .then((data) => setUser(data.user))
+      .catch((err) => {
+        if (err.name === 'AbortError') return;
+        // Only drop the session on a genuine auth rejection — never on a
+        // transient network error, which would log the user out spuriously.
+        if (err.status === 401 || err.status === 403) {
           localStorage.removeItem(TOKEN_KEY);
           setToken(null);
           setUser(null);
         }
       })
       .finally(() => {
-        if (active) setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       });
-    return () => {
-      active = false;
-    };
+    return () => controller.abort();
   }, [token]);
 
   const applyAuth = useCallback((data) => {

@@ -1,6 +1,6 @@
 const BASE = '/api';
 
-export async function apiFetch(path, { method = 'GET', body, token } = {}) {
+export async function apiFetch(path, { method = 'GET', body, token, signal } = {}) {
   const headers = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -9,11 +9,14 @@ export async function apiFetch(path, { method = 'GET', body, token } = {}) {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
+    signal,
   });
 
   const data = await res.json().catch(() => null);
   if (!res.ok) {
-    throw new Error(data?.error || 'Something went wrong. Please try again.');
+    const error = new Error(data?.error || 'Something went wrong. Please try again.');
+    error.status = res.status;
+    throw error;
   }
   return data;
 }

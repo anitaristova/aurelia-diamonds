@@ -10,7 +10,16 @@ const STANDARD_SHIPPING = 5;
 export default function Cart() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-  const { cart, subtotal, updateCartQuantity, removeCartItem } = useShop();
+  const { cart, subtotal, updateCartQuantity, removeCartItem, loading } = useShop();
+
+  if (isAuthenticated && loading) {
+    return (
+      <div className="container cart">
+        <h1 className="cart__title">Your Cart</h1>
+        <p className="page-status">Loading…</p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (

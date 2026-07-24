@@ -6,7 +6,16 @@ import Icon from '../components/Icon.jsx';
 
 export default function Favorites() {
   const { isAuthenticated } = useAuth();
-  const { favorites, addToCart, toggleFavorite } = useShop();
+  const { favorites, addToCart, toggleFavorite, loading } = useShop();
+
+  if (isAuthenticated && loading) {
+    return (
+      <div className="container fav">
+        <h1 className="fav__title">My Favorites</h1>
+        <p className="page-status">Loading…</p>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (

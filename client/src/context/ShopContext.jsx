@@ -8,21 +8,27 @@ export function ShopProvider({ children }) {
   const { token, isAuthenticated } = useAuth();
   const [cart, setCart] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
     if (!isAuthenticated || !token) {
       setCart([]);
       setFavorites([]);
+      setLoading(false);
       return;
     }
+    setLoading(true);
     Promise.all([apiFetch('/cart', { token }), apiFetch('/favorites', { token })])
       .then(([cartData, favData]) => {
         if (!active) return;
         setCart(cartData.cart);
         setFavorites(favData.favorites);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
     return () => {
       active = false;
     };
@@ -85,6 +91,7 @@ export function ShopProvider({ children }) {
   const value = {
     cart,
     favorites,
+    loading,
     cartCount,
     favoritesCount: favorites.length,
     subtotal,

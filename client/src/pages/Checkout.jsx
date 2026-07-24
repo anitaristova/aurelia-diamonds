@@ -11,7 +11,7 @@ const STANDARD_SHIPPING = 5;
 export default function Checkout() {
   const navigate = useNavigate();
   const { user, token } = useAuth();
-  const { cart, subtotal, clearCart } = useShop();
+  const { cart, subtotal, clearCart, loading } = useShop();
 
   const [form, setForm] = useState({
     firstName: user?.firstName || '',
@@ -26,6 +26,9 @@ export default function Checkout() {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  if (loading) {
+    return <p className="page-status">Loading…</p>;
+  }
   if (cart.length === 0) {
     return <Navigate to="/cart" replace />;
   }
