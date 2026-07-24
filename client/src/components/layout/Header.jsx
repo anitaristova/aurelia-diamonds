@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthContext.jsx';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isAdmin, user } = useAuth();
   const [searchOpen, setSearchOpen] = useState(false);
   const [term, setTerm] = useState('');
 
@@ -27,6 +27,11 @@ export default function Header() {
     <header className="header">
       <div className="header__utility">
         <div className="header__utility-inner">
+          {isAdmin && (
+            <Link to="/admin" className="header__utility-link">
+              <span>Admin</span>
+            </Link>
+          )}
           <Link to="/account" className="header__utility-link">
             <Icon name="account" size={16} />
             <span>My Account</span>

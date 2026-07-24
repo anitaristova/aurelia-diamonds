@@ -8,6 +8,9 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AccountLayout from './pages/account/AccountLayout.jsx';
 import AccountProfile from './pages/account/AccountProfile.jsx';
+import AdminLayout from './pages/admin/AdminLayout.jsx';
+import AdminProducts from './pages/admin/AdminProducts.jsx';
+import AdminProductForm from './pages/admin/AdminProductForm.jsx';
 
 function CategoryPlaceholder() {
   const { department, subcategory } = useParams();
@@ -56,7 +59,19 @@ export default function App() {
                 <Route index element={<AccountProfile />} />
                 <Route path="orders" element={<Placeholder title="My Orders" message="Orders coming soon." />} />
               </Route>
-              <Route path="admin/*" element={<Placeholder title="Admin" message="Admin area coming soon." />} />
+              <Route
+                path="admin"
+                element={
+                  <RequireAuth adminOnly>
+                    <AdminLayout />
+                  </RequireAuth>
+                }
+              >
+                <Route index element={<AdminProducts />} />
+                <Route path="products/new" element={<AdminProductForm />} />
+                <Route path="products/:id/edit" element={<AdminProductForm />} />
+                <Route path="orders" element={<Placeholder title="Orders" message="Order management coming soon." />} />
+              </Route>
               <Route path="*" element={<Placeholder title="Page not found" message="The page you are looking for does not exist." />} />
             </Route>
           </Routes>

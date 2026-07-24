@@ -17,3 +17,20 @@ export async function apiFetch(path, { method = 'GET', body, token } = {}) {
   }
   return data;
 }
+
+export async function apiUpload(path, files, token) {
+  const form = new FormData();
+  for (const file of files) form.append('images', file);
+
+  const res = await fetch(`${BASE}${path}`, {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    body: form,
+  });
+
+  const data = await res.json().catch(() => null);
+  if (!res.ok) {
+    throw new Error(data?.error || 'Upload failed. Please try again.');
+  }
+  return data;
+}
