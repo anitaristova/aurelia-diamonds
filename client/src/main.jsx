@@ -8,6 +8,7 @@ import './styles/forms.css';
 import './styles/account.css';
 import './styles/admin.css';
 import './styles/storefront.css';
+import './styles/cart.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

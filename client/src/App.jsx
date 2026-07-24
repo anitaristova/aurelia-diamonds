@@ -8,6 +8,8 @@ import { LoginPromptProvider } from './context/LoginPrompt.jsx';
 import Home from './pages/Home.jsx';
 import Listing from './pages/Listing.jsx';
 import ProductDetails from './pages/ProductDetails.jsx';
+import Favorites from './pages/Favorites.jsx';
+import Cart from './pages/Cart.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AccountLayout from './pages/account/AccountLayout.jsx';
@@ -30,8 +32,8 @@ export default function App() {
                 <Route path="sale" element={<Listing />} />
                 <Route path="search" element={<Listing />} />
                 <Route path="product/:id" element={<ProductDetails />} />
-                <Route path="favorites" element={<Placeholder title="My Favorites" message="Favorites coming soon." />} />
-                <Route path="cart" element={<Placeholder title="Your Cart" message="Cart coming soon." />} />
+                <Route path="favorites" element={<Favorites />} />
+                <Route path="cart" element={<Cart />} />
                 <Route path="checkout" element={<Placeholder title="Checkout" message="Checkout coming soon." />} />
                 <Route path="order-confirmation" element={<Placeholder title="Thank you for your order!" />} />
                 <Route path="login" element={<Login />} />
