@@ -1,0 +1,48 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  server:
+    build:
+      context: ./server
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      SERVER_PORT: ${SERVER_PORT:-5000}
+      MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017/aurelia}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@aurelia.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-change-this-admin-password}
+    ports:
+      - "${SERVER_PORT:-5000}:5000"
+    volumes:
+      - ./server:/app
+      - server-node-modules:/app/node_modules
+      - uploads:/app/uploads
+
+  client:
+    build:
+      context: ./client
+    restart: unless-stopped
+    depends_on:
+      - server
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT:-5173}
+      VITE_API_PROXY: http://server:5000
+    ports:
+      - "${CLIENT_PORT:-5173}:5173"
+    volumes:
+      - ./client:/app
+      - client-node-modules:/app/node_modules
+
+volumes:
+  mongo-data:
+  server-node-modules:
+  client-node-modules:
+  uploads:
