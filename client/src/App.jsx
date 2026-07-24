@@ -10,13 +10,17 @@ import Listing from './pages/Listing.jsx';
 import ProductDetails from './pages/ProductDetails.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Cart from './pages/Cart.jsx';
+import Checkout from './pages/Checkout.jsx';
+import OrderConfirmation from './pages/OrderConfirmation.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import AccountLayout from './pages/account/AccountLayout.jsx';
 import AccountProfile from './pages/account/AccountProfile.jsx';
+import AccountOrders from './pages/account/AccountOrders.jsx';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
 import AdminProducts from './pages/admin/AdminProducts.jsx';
 import AdminProductForm from './pages/admin/AdminProductForm.jsx';
+import AdminOrders from './pages/admin/AdminOrders.jsx';
 
 export default function App() {
   return (
@@ -34,8 +38,22 @@ export default function App() {
                 <Route path="product/:id" element={<ProductDetails />} />
                 <Route path="favorites" element={<Favorites />} />
                 <Route path="cart" element={<Cart />} />
-                <Route path="checkout" element={<Placeholder title="Checkout" message="Checkout coming soon." />} />
-                <Route path="order-confirmation" element={<Placeholder title="Thank you for your order!" />} />
+                <Route
+                  path="checkout"
+                  element={
+                    <RequireAuth>
+                      <Checkout />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="order-confirmation/:id"
+                  element={
+                    <RequireAuth>
+                      <OrderConfirmation />
+                    </RequireAuth>
+                  }
+                />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route
@@ -47,7 +65,7 @@ export default function App() {
                   }
                 >
                   <Route index element={<AccountProfile />} />
-                  <Route path="orders" element={<Placeholder title="My Orders" message="Orders coming soon." />} />
+                  <Route path="orders" element={<AccountOrders />} />
                 </Route>
                 <Route
                   path="admin"
@@ -60,7 +78,7 @@ export default function App() {
                   <Route index element={<AdminProducts />} />
                   <Route path="products/new" element={<AdminProductForm />} />
                   <Route path="products/:id/edit" element={<AdminProductForm />} />
-                  <Route path="orders" element={<Placeholder title="Orders" message="Order management coming soon." />} />
+                  <Route path="orders" element={<AdminOrders />} />
                 </Route>
                 <Route path="*" element={<Placeholder title="Page not found" message="The page you are looking for does not exist." />} />
               </Route>

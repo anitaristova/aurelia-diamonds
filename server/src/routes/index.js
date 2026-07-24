@@ -5,6 +5,7 @@ import productsRouter from './products.js';
 import uploadsRouter from './uploads.js';
 import cartRouter from './cart.js';
 import favoritesRouter from './favorites.js';
+import ordersRouter from './orders.js';
 
 export const apiRouter = Router();
 
@@ -18,3 +19,4 @@ apiRouter.use('/products', productsRouter);
 apiRouter.use('/uploads', uploadsRouter);
 apiRouter.use('/cart', cartRouter);
 apiRouter.use('/favorites', favoritesRouter);
+apiRouter.use('/orders', ordersRouter);

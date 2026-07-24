@@ -60,6 +60,8 @@ export function ShopProvider({ children }) {
     [token]
   );
 
+  const clearCart = useCallback(() => setCart([]), []);
+
   const isFavorite = useCallback(
     (productId) => favorites.some((p) => p._id === productId),
     [favorites]
@@ -89,6 +91,7 @@ export function ShopProvider({ children }) {
     addToCart,
     updateCartQuantity,
     removeCartItem,
+    clearCart,
     isFavorite,
     toggleFavorite,
     setCart,
