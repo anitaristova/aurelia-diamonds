@@ -3,15 +3,14 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Icon from '../Icon.jsx';
 import { NAVIGATION } from '../../constants/navigation.js';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { useShop } from '../../context/ShopContext.jsx';
 
 export default function Header() {
   const navigate = useNavigate();
-  const { isAuthenticated, isAdmin, user } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
+  const { cartCount, favoritesCount } = useShop();
   const [searchOpen, setSearchOpen] = useState(false);
   const [term, setTerm] = useState('');
-
-  const favoritesCount = user?.favorites?.length || 0;
-  const cartCount = user?.cart?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
   function submitSearch(e) {
     e.preventDefault();
