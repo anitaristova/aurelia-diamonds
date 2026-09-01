@@ -105,10 +105,12 @@ export default function AdminProducts() {
                   {product.onSale ? 'Sale' : ''}
                 </td>
                 <td className="admin-table__actions">
-                  <Link to={`/admin/products/${product._id}/edit`}>Edit</Link>
-                  <button type="button" onClick={() => handleDelete(product)}>
-                    Delete
-                  </button>
+                  <div className="admin-table__actions-inner">
+                    <Link to={`/admin/products/${product._id}/edit`}>Edit</Link>
+                    <button type="button" onClick={() => handleDelete(product)}>
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

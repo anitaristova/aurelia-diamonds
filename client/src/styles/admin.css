@@ -107,9 +107,12 @@
 }
 
 .admin-table__actions {
+  white-space: nowrap;
+}
+
+.admin-table__actions-inner {
   display: flex;
   gap: var(--space-3);
-  white-space: nowrap;
 }
 
 .admin-table__actions a,
